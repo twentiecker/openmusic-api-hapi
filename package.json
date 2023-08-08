@@ -8,7 +8,8 @@
     "start-prod": "NODE_ENV=production node ./src/server.js",
     "start-dev": "nodemon ./src/server.js",
     "lint": "eslint ./src",
-    "migrate": "node-pg-migrate"
+    "migrate": "node-pg-migrate",
+    "newman": "newman run open-music-api-v1-test.postman_collection.json --environment open-music-api-v1-test.postman_environment.json"
   },
   "keywords": [],
   "author": "",
