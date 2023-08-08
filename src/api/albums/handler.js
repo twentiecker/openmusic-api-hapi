@@ -1,33 +1,31 @@
 const ClientError = require('../../exceptions/ClientError');
 
-class SongsHandler {
+class AlbumsHandler {
   constructor(service, validator) {
     this._service = service;
     this._validator = validator;
 
-    this.postSongHandler = this.postSongHandler.bind(this);
-    this.getSongsHandler = this.getSongsHandler.bind(this);
-    this.getSongByIdHandler = this.getSongByIdHandler.bind(this);
-    this.putSongByIdHandler = this.putSongByIdHandler.bind(this);
-    this.deleteSongByIdHandler = this.deleteSongByIdHandler.bind(this);
+    this.postAlbumHandler = this.postAlbumHandler.bind(this);
+    this.getAlbumByIdHandler = this.getAlbumByIdHandler.bind(this);
+    this.putAlbumByIdHandler = this.putAlbumByIdHandler.bind(this);
+    this.deleteAlbumByIdHandler = this.deleteAlbumByIdHandler.bind(this);
   }
 
-  async postSongHandler(request, h) {
+  async postAlbumHandler(request, h) {
     try {
-      this._validator.validateSongPayload(request.payload);
-      const {
-        title, year, performer, genre, duration, albumId,
-      } = request.payload;
+      this._validator.validateAlbumPayload(request.payload);
+      const { name, year } = request.payload;
 
-      const songId = await this._service.addSong({
-        title, year, performer, genre, duration, albumId,
+      const albumId = await this._service.addAlbum({
+        name,
+        year,
       });
 
       const response = h.response({
         status: 'success',
-        message: 'Lagu berhasil ditambahkan',
+        message: 'Album berhasil ditambahkan',
         data: {
-          songId,
+          albumId,
         },
       });
       response.code(201);
@@ -53,19 +51,16 @@ class SongsHandler {
     }
   }
 
-  async getSongsHandler(request, h) {
+  async getAlbumByIdHandler(request, h) {
     try {
-      let { title, performer } = request.query;
-      if (title === undefined && performer === undefined) {
-        title = '';
-        performer = '';
-      }
-      const songs = await this._service.getSongs(title, performer);
+      const { albumId } = request.params;
+
+      const album = await this._service.getAlbumById(albumId);
 
       return {
         status: 'success',
         data: {
-          songs,
+          album,
         },
       };
     } catch (error) {
@@ -89,17 +84,20 @@ class SongsHandler {
     }
   }
 
-  async getSongByIdHandler(request, h) {
+  async putAlbumByIdHandler(request, h) {
     try {
-      const { songId } = request.params;
+      this._validator.validateAlbumPayload(request.payload);
+      const { name, year } = request.payload;
+      const { albumId } = request.params;
 
-      const song = await this._service.getSongById(songId);
+      await this._service.editAlbumById(albumId, {
+        name,
+        year,
+      });
 
       return {
         status: 'success',
-        data: {
-          song,
-        },
+        message: 'Album berhasil diperbarui',
       };
     } catch (error) {
       if (error instanceof ClientError) {
@@ -122,52 +120,15 @@ class SongsHandler {
     }
   }
 
-  async putSongByIdHandler(request, h) {
+  async deleteAlbumByIdHandler(request, h) {
     try {
-      this._validator.validateSongPayload(request.payload);
-      const {
-        title, year, performer, genre, duration, albumId,
-      } = request.payload;
-      const { songId } = request.params;
+      const { albumId } = request.params;
 
-      await this._service.editSongById(songId, {
-        title, year, performer, genre, duration, albumId,
-      });
+      await this._service.deleteAlbumById(albumId);
 
       return {
         status: 'success',
-        message: 'Lagu berhasil diperbarui',
-      };
-    } catch (error) {
-      if (error instanceof ClientError) {
-        const response = h.response({
-          status: 'fail',
-          message: error.message,
-        });
-        response.code(error.statusCode);
-        return response;
-      }
-
-      // Server ERROR!
-      const response = h.response({
-        status: 'error',
-        message: 'Maaf, terjadi kegagalan pada server kami.',
-      });
-      response.code(500);
-      console.error(error);
-      return response;
-    }
-  }
-
-  async deleteSongByIdHandler(request, h) {
-    try {
-      const { songId } = request.params;
-
-      await this._service.deleteSongById(songId);
-
-      return {
-        status: 'success',
-        message: 'Lagu berhasil dihapus',
+        message: 'Album berhasil dihapus',
       };
     } catch (error) {
       if (error instanceof ClientError) {
@@ -191,4 +152,4 @@ class SongsHandler {
   }
 }
 
-module.exports = SongsHandler;
+module.exports = AlbumsHandler;
