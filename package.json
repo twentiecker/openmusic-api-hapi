@@ -9,7 +9,7 @@
     "start-dev": "nodemon ./src/server.js",
     "lint": "eslint ./src",
     "migrate": "node-pg-migrate",
-    "newman": "newman run open-music-api-v1-test.postman_collection.json --environment open-music-api-v1-test.postman_environment.json"
+    "newman": "newman run open-music-api-v2-test.postman_collection.json --environment open-music-api-v2-test.postman_environment.json"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "@hapi/hapi": "^20.2.0",
+    "@hapi/jwt": "^2.2.0",
+    "bcrypt": "^5.1.0",
     "dotenv": "^10.0.0",
     "joi": "^17.4.2",
     "nanoid": "^3.1.25",
