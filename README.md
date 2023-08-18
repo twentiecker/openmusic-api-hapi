@@ -10,11 +10,11 @@
   <li>Method : <strong>POST</strong></li>
   <li>URL : <strong>/export/playlists/{playlistId}</strong></li>
   <li>Body Request:</li>
-  <code>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
   {
     "targetEmail": string
   }
-  </code>
+  </code></pre></div></div>
 </ul>
 
 <h4 id="example-pages">Example Pages</h4>
