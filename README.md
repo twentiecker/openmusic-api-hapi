@@ -4,7 +4,6 @@
 <p>Terdapat 4 kriteria utama yang harus Anda penuhi dalam membuat proyek OpenMusic API.</p>
 
 <h3>Kriteria 1 : Ekspor Lagu Pada Playlist</h3>
-
 <p>API yang Anda buat harus tersedia fitur ekspor lagu pada playlist melalui route:</p>
 <ul>
   <li>Method : <strong>POST</strong></li>
@@ -16,6 +15,59 @@
   }
   </code></pre></div></div>
 </ul>
+<p>Ketentuan:</p>
+<ul>
+  <li>Wajib menggunakan message broker dengan menggunakan RabbitMQ. 
+    <ul>
+      <li>Nilai host server RabbitMQ wajib menggunakan environment variable <strong>RABBITMQ_SERVER</strong></li>
+    </ul>
+  </li>
+  <li>Hanya pemilik Playlist yang boleh mengekspor lagu.</li>
+  <li>Wajib mengirimkan program consumer.</li>
+  <li>Hasil ekspor berupa data json.</li>
+  <li>Dikirimkan melalui email menggunakan nodemailer. 
+    <ul>
+      <li>Kredensial alamat dan password email pengirim wajib menggunakan environment variable <strong>MAIL_ADDRESS</strong> dan <strong>MAIL_PASSWORD</strong>.</li>
+    </ul>
+  </li>
+</ul>
+<p>Response yang harus dikembalikan:</p>
+<ul>
+  <li>Status Code: 201</li>
+  <li>Response Body:</li>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+  {
+    "status": "success",
+    "message": "Permintaan Anda sedang kami proses",
+  }
+  </code></pre></div></div>
+</ul>
+<p>Struktur data JSON yang diekspor adalah seperti ini:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+  {
+    "playlist": {
+      "id": "playlist-Mk8AnmCp210PwT6B",
+      "name": "My Favorite Coldplay Song",
+      "songs": [
+        {
+          "id": "song-Qbax5Oy7L8WKf74l",
+          "title": "Life in Technicolor",
+          "performer": "Coldplay"
+        },
+        {
+          "id": "song-poax5Oy7L8WKllqw",
+          "title": "Centimeteries of London",
+          "performer": "Coldplay"
+        },
+        {
+          "id": "song-Qalokam7L8WKf74l",
+          "title": "Lost!",
+          "performer": "Coldplay"
+        }
+      ]
+    }
+  }
+  </code></pre></div></div>
 
 <h4 id="example-pages">Example Pages</h4>
 
