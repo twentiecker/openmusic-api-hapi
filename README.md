@@ -132,9 +132,30 @@
   <li>Pastikan pengguna hanya bisa menyukai album yang sama sebanyak 1 kali. Kembalikan dengan response code 400 jika pengguna mencoba menyukai album yang sama.</li>
 </ul>
 
-<h4 id="example-pages">Example Pages</h4>
+<h3>Kriteria 4 : Menerapkan Server-Side Cache</h3>
+<p>API yang Anda buat harus tersedia fitur ekspor lagu pada playlist melalui route:</p>
+<ul>
+  <li>Menerapkan server-side cache pada jumlah yang menyukai sebuah album (GET /albums/{id}/likes).</li>
+  <li>Cache harus bertahan selama 30 menit.</li>
+  <li>Respons yang dihasilkan dari cache harus memiliki custom header properti <strong>X-Data-Source</strong> bernilai “cache”.</li>
+  <li>Cache harus dihapus setiap kali ada perubahan jumlah like pada album dengan id tertentu.</li>
+  <li>Memory caching engine wajib menggunakan Redis atau Memurai (Windows).
+    <ul>
+      <li>Nilai host server Redis wajib menggunakan environment variable <strong>REDIS_SERVER</strong></li>
+  </li>
+</ul>
 
-<p>If you want to get inspiration or just show something directly to your clients, you can jump start your development with our pre-built example pages. You will be able to quickly set up the basic structure for your web project.</p>
+<h3>Kriteria 5 : Pertahankan Fitur OpenMusic API versi 2 dan 1</h3>
+<p>Pastikan fitur dan kriteria OpenMusic API versi 2 dan 1 tetap dipertahankan seperti:</p>
+<ul>
+  <li>Pengelolaan Data Album</li>
+  <li>Pengelolaan Data Song</li>
+  <li>Fitur Registrasi dan Autentikasi Pengguna</li>
+  <li>Pengelolaan Data Playlist</li>
+  <li>Menerapkan Foreign Key</li>
+  <li>Menerapkan Data Validation</li>
+  <li>Penanganan Eror (Error Handling)</li>
+</ul>
 
 <h2 id="table-of-contents">Table of Contents</h2>
 
