@@ -28,6 +28,7 @@
   <li>Dikirimkan melalui email menggunakan nodemailer. 
     <ul>
       <li>Kredensial alamat dan password email pengirim wajib menggunakan environment variable <strong>MAIL_ADDRESS</strong> dan <strong>MAIL_PASSWORD</strong>.</li>
+      <li>Serta, nilai host dan port dari server SMTP juga wajib menggunakan environment variable <strong>MAIL_HOST</strong> dan <strong>MAIL_PORT</strong>.</li>
     </ul>
   </li>
 </ul>
@@ -68,6 +69,59 @@
     }
   }
   </code></pre></div></div>
+
+<h3>Kriteria 2 : Mengunggah Sampul Album</h3>
+<p>API yang Anda buat harus dapat mengunggah sampul album melalui route:</p>
+<ul>
+  <li>Method : <strong>POST</strong></li>
+  <li>URL : <strong>/albums/{id}/covers (Form data)</strong></li>
+  <li>Body Request (Form data):</li>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+  {
+    "cover": file
+  }
+  </code></pre></div></div>
+</ul>
+<p>Ketentuan:</p>
+<ul>
+  <li>Tipe konten yang diunggah harus merupakan MIME types dari images.</li>
+  <li>Ukuran file cover maksimal 512000 Bytes.</li>
+  <li>Anda bisa menggunakan File System (lokal) atau S3 Bucket dalam menampung object. 
+    <ul>
+      <li>Bila menggunakan S3 Bucket, nama bucket wajib menggunakan variable environment <strong>AWS_BUCKET_NAME</strong>.</li>
+    </ul>
+  </li>
+</ul>
+<p>Response yang harus dikembalikan:</p>
+<ul>
+  <li>Status Code: 201</li>
+  <li>Response Body:</li>
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+  {
+    "status": "success",
+    "message": "Sampul berhasil diunggah"
+  }
+  </code></pre></div></div>
+</ul>
+<p>Respons dari endpoint <strong>GET /albums/{id}</strong> harus menampilkan properti coverUrl. Itu berarti, alamat atau nama sampul album harus disimpan di dalam database. Berikut respons yang harus dikembalikan oleh endpoint <strong>GET /albums/{id}</strong>:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+  {
+    "status": "success",
+    "data": {
+      "album": {
+        "id": "album-Mk8AnmCp210PwT6B",
+        "name": "Viva la Vida",
+        "coverUrl": "http://...."
+      }
+    }
+  }
+  </code></pre></div></div>
+<p>Ketentuan:</p>
+<ul>
+  <li>URL gambar harus dapat diakses dengan baik.</li>
+  <li>Bila album belum memiliki sampul, maka coverUrl bernilai null.</li>
+  <li>Bila menambahkan sampul pada album yang sudah memiliki sampul, maka sampul lama akan tergantikan.</li>
+</ul>
 
 <h4 id="example-pages">Example Pages</h4>
 
