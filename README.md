@@ -1,20 +1,21 @@
-<h1 id="argon-design-system"><a href="https://www.creative-tim.com/product/vue-argon-design-system">Vue Argon Design System</a></h1>
+<h1>Openmusic API v3.0</h1>
 
-<p><img src="https://s3.amazonaws.com/creativetim_bucket/products/92/original/opt_argon_vue_thumbnail.jpg?1534236902" alt="Product Gif" /></p>
+<h2>Kriteria OpenMusic API versi 3</h2>
+<p>Terdapat 4 kriteria utama yang harus Anda penuhi dalam membuat proyek OpenMusic API.</p>
 
-<p>Start your development with a Design System for Bootstrap 4. It is open source, free and it features many components that can help you create amazing websites.</p>
+<h3>Kriteria 1 : Ekspor Lagu Pada Playlist</h3>
 
-<h4 id="fully-coded-components">Fully Coded Components</h4>
-
-<p>Vue Argon Design System is built with over 100 individual components, giving you the freedom of choosing and combining. All components can take variations in colour, that you can easily modify using SASS files.</p>
-
-<p>You will save a lot of time going from prototyping to full-functional code, because all elements are implemented. This Design System is coming with prebuilt examples, so the development process is seamless, switching from our pages to the real website is very easy to be done.</p>
-
-<p>Every element has multiple states for colors, styles, hover, focus, that you can easily access and use.</p>
-
-<h4 id="complex-documentation">Complex Documentation</h4>
-
-<p>Each element is well presented in a very complex documentation. You can read more about the idea behind this design system here. You can check the components here and the foundation here.</p>
+<p>API yang Anda buat harus tersedia fitur ekspor lagu pada playlist melalui route:</p>
+<ul>
+  <li>Method : <strong>POST</strong></li>
+  <li>URL : <strong>/export/playlists/{playlistId}</strong></li>
+  <li>Body Request:</li>
+  <code>
+  {
+    "targetEmail": string
+  }
+  </code>
+</ul>
 
 <h4 id="example-pages">Example Pages</h4>
 
