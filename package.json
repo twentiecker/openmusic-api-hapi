@@ -1,6 +1,6 @@
 {
-  "name": "notes-app-back-end",
-  "version": "1.0.0",
+  "name": "openmusic-api",
+  "version": "3.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "start-dev": "nodemon ./src/server.js",
     "lint": "eslint ./src",
     "migrate": "node-pg-migrate",
-    "newman": "newman run open-music-api-v2-test.postman_collection.json --environment open-music-api-v2-test.postman_environment.json"
+    "newman": "newman run open-music-api-v3-test.postman_collection.json --environment open-music-api-v3-test.postman_environment.json"
   },
   "keywords": [],
   "author": "",
@@ -22,12 +22,15 @@
   },
   "dependencies": {
     "@hapi/hapi": "^20.2.0",
+    "@hapi/inert": "^6.0.5",
     "@hapi/jwt": "^2.2.0",
+    "amqplib": "^0.8.0",
     "bcrypt": "^5.1.0",
     "dotenv": "^10.0.0",
     "joi": "^17.4.2",
     "nanoid": "^3.1.25",
     "node-pg-migrate": "^6.0.0",
-    "pg": "^8.7.1"
+    "pg": "^8.7.1",
+    "redis": "^3.1.2"
   }
 }

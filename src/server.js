@@ -1,8 +1,7 @@
-// mengimpor dotenv dan menjalankan konfigurasinya
-require('dotenv').config();
-
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
+const Inert = require('@hapi/inert');
+const path = require('path');
 
 // albums
 const albums = require('./api/albums');
@@ -35,19 +34,34 @@ const playlists = require('./api/playlists');
 const PlaylistsService = require('./services/postgres/PlaylistsService');
 const PlaylistsValidator = require('./validator/playlists');
 
+// exports
+const _exports = require('./api/exports');
+const ProducerService = require('./services/rabbitmq/ProducerService');
+const ExportsValidator = require('./validator/exports');
+
+// uploads
+const StorageService = require('./services/storage/StorageService');
+const UploadsValidator = require('./validator/uploads');
+
+// cache
+const CacheService = require('./services/redis/CacheService');
+
 const ClientError = require('./exceptions/ClientError');
+const { config } = require('./utils/config');
 
 const init = async () => {
-  const albumsService = new AlbumsService();
+  const cacheService = new CacheService();
+  const albumsService = new AlbumsService(cacheService);
   const songsService = new SongsService();
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
-  const collaborationsService = new CollaborationsService();
-  const playlistsService = new PlaylistsService(collaborationsService);
+  const collaborationsService = new CollaborationsService(cacheService);
+  const playlistsService = new PlaylistsService(collaborationsService, cacheService);
+  const storageService = new StorageService(path.resolve(__dirname, 'api/albums/covers'));
 
   const server = Hapi.server({
-    port: process.env.PORT,
-    host: process.env.HOST,
+    port: config.server.port,
+    host: config.server.host,
     routes: {
       cors: {
         origin: ['*'],
@@ -60,16 +74,19 @@ const init = async () => {
     {
       plugin: Jwt,
     },
+    {
+      plugin: Inert,
+    },
   ]);
 
   // mendefinisikan strategy autentikasi jwt
   server.auth.strategy('openmusic_jwt', 'jwt', {
-    keys: process.env.ACCESS_TOKEN_KEY,
+    keys: config.jwt.accessTokenKey,
     verify: {
       aud: false,
       iss: false,
       sub: false,
-      maxAgeSec: process.env.ACCESS_TOKEN_AGE,
+      maxAgeSec: config.jwt.accessTokenAge,
     },
     validate: (artifacts) => ({
       isValid: true,
@@ -85,6 +102,9 @@ const init = async () => {
       options: {
         service: albumsService,
         validator: AlbumsValidator,
+        songsService,
+        uploadService: storageService,
+        uploadValidator: UploadsValidator,
       },
     },
     {
@@ -123,6 +143,15 @@ const init = async () => {
       options: {
         service: playlistsService,
         validator: PlaylistsValidator,
+      },
+    },
+    {
+      plugin: _exports,
+      options: {
+        collaborationsService,
+        playlistsService,
+        service: ProducerService,
+        validator: ExportsValidator,
       },
     },
   ]);
