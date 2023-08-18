@@ -123,6 +123,15 @@
   <li>Bila menambahkan sampul pada album yang sudah memiliki sampul, maka sampul lama akan tergantikan.</li>
 </ul>
 
+<h3>(Updated!) Kriteria 3 : Menyukai Album</h3>
+<p>API harus memiliki fitur menyukai, batal menyukai, serta melihat jumlah yang menyukai album. Berikut spesifikasinya:</p>
+
+<p>Keterangan:</p>
+<ul>
+  <li>Menyukai atau batal menyukai album merupakan resource strict sehingga dibutuhkan autentikasi untuk mengaksesnya. Hal ini bertujuan untuk mengetahui apakah pengguna sudah menyukai album.</li>
+  <li>Pastikan pengguna hanya bisa menyukai album yang sama sebanyak 1 kali. Kembalikan dengan response code 400 jika pengguna mencoba menyukai album yang sama.</li>
+</ul>
+
 <h4 id="example-pages">Example Pages</h4>
 
 <p>If you want to get inspiration or just show something directly to your clients, you can jump start your development with our pre-built example pages. You will be able to quickly set up the basic structure for your web project.</p>
