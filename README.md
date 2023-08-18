@@ -180,6 +180,7 @@
   <li>Memory caching engine wajib menggunakan Redis atau Memurai (Windows).
     <ul>
       <li>Nilai host server Redis wajib menggunakan environment variable <strong>REDIS_SERVER</strong></li>
+    </ul>
   </li>
 </ul>
 
